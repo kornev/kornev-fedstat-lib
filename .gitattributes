@@ -1,0 +1,6 @@
+# -*- mode: gitattributes -*-
+
+*.html  -text
+*.xml   -text
+*.tsv   -text
+

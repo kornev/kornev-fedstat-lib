@@ -1,0 +1,32 @@
+{:deps
+ {org.clojure/clojure   {:mvn/version "1.12.6"}
+  babashka/babashka.curl {:mvn/version "0.1.2"}
+  fipp/fipp             {:mvn/version "0.6.29"}
+  cheshire/cheshire     {:mvn/version "6.2.0"}
+  org.clojure/data.xml  {:mvn/version "0.2.0-alpha9"}}
+
+ :paths
+ ["src" "resources"]
+
+ :aliases
+ {:build {:deps {io.github.clojure/tools.build {:mvn/version "0.10.14"}}
+          :ns-default build}
+
+  :test
+  {:extra-paths ["test"]
+   :main-opts   ["-m" "fedstat.test-runner"]}
+
+  :repl
+  {:extra-paths ["dev"]
+   :extra-deps {nrepl/nrepl       {:mvn/version "1.8.0"}
+                cider/cider-nrepl {:mvn/version "0.63.1"}
+                cheshire/cheshire {:mvn/version "6.2.0"}}
+   :main-opts  ["--main" "nrepl.cmdline"
+                "--bind" "0.0.0.0"
+                "--port" 7888
+                "--interactive"
+                "--middleware" "[cider.nrepl/cider-middleware]"]}
+
+  :code-reformat
+  {:replace-deps {dev.weavejester/cljfmt {:mvn/version "0.16.6"}}
+   :main-opts ["-m" "cljfmt.main"]}}}

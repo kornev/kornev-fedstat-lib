@@ -1,0 +1,25 @@
+{:paths ["src" "test" "resources"]
+
+ :tasks
+ {jar {:doc "Build an installable library jar into out/"
+       :task (do (babashka.fs/create-dirs "out")
+                 (babashka.tasks/clojure "-T:build jar-lib"))}
+
+  test {:doc "Run the test suite (offline, fixtures + fake transport)"
+        :task (do (require 'fedstat.test-runner)
+                  ((resolve 'fedstat.test-runner/run)))}
+
+  live-test {:doc "Run all tests including live fedstat.ru integration"
+             :task (do (System/setProperty "fedstat.test.live" "true")
+                       (require 'fedstat.test-runner)
+                       ((resolve 'fedstat.test-runner/run)))}
+
+  clean {:doc "Remove build output (out/ and classes/)"
+         :task (babashka.tasks/clojure "-T:build clean")}
+
+  repl {:doc "Start REPL server)"
+        :override-builtin true
+        :task (babashka.tasks/clojure "-M:repl")}
+
+  fmt {:doc "Auto-fix code formatting with cljfmt"
+       :task (babashka.tasks/clojure "-M:code-reformat" "fix" "src" "test" "build.clj")}}}
